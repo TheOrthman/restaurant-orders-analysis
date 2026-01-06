@@ -1,0 +1,24 @@
+
+SELECT 
+    CASE 
+        WHEN hour_24 = 0 THEN '12 AM'
+        WHEN hour_24 < 12 THEN hour_24 || 'AM'
+        WHEN hour_24 = 12 THEN '12PM'
+        ELSE (hour_24 - 12) || 'PM'
+    END AS hour_label,
+    total_orders
+FROM (
+    SELECT
+         CASE 
+            WHEN LOWER(order_time) LIKE '%PM'
+                 AND cast(SUBSTR(order_time, 1, 2) AS INTEGER) < 12
+                 THEN CAST(SUBSTR(order_time, 1, 2) AS INTEGER) + 12
+            WHEN LOWER(order_time) LIKE '%AM'
+                 AND SUBSTR(order_time, 1, 2) = '12'
+                 THEN 0 
+            ELSE CAST(SUBSTR(order_time, 1, 2) AS INTEGER)
+         END AS hour_24,
+         count(order_id) AS total_orders
+     FROM order_details
+     GROUP BY hour_24
+  );

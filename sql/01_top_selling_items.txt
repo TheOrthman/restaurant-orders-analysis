@@ -1,0 +1,8 @@
+SELECT
+       m.items_name,
+       count(o.order_id) AS total_orders
+FROM order_details o 
+JOIN menu_items m 
+     on o.item_id = m.menu_items_id
+GROUP by m.items_name
+order by total_orders DESC;

@@ -1,0 +1,9 @@
+SELECT
+       m.category,
+       COUNT(o.order_id) AS total_orders,
+       ROUND(SUM(m.price), 2) AS total_revenue
+FROM order_details o 
+JOIN menu_items m 
+     ON o.item_id = m.menu_items_id
+GROUP BY m.category
+ORDER BY total_revenue DESC;

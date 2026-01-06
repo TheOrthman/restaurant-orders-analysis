@@ -1,0 +1,8 @@
+SELECT 
+    m.items_name,
+    ROUND(SUM(m.price), 2) AS total_revenue
+FROM order_details o 
+JOIN menu_items m 
+     ON o.item_id = m.menu_items_id
+GROUP BY m.items_name
+ORDER BY total_revenue DESC;
